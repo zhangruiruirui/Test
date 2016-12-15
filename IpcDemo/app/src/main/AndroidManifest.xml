@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="lanou.ipcdemo">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <!--在 Activity/ 或Service标签上添加prcess属性,可以吧该activity/service放到
+        另一个进程,process的值, 就是另一个进程的名字
+        :remote 代表,新进程的名字,是 原进程的名字: remote-->
+        <service android:name=".RemoteService"
+            android:process=":remote"/>
+    </application>
+
+</manifest>

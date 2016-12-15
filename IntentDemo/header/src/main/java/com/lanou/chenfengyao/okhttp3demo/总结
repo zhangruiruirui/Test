@@ -1,0 +1,50 @@
+Android中网络请求的历史
+HttpURLConnection,HttpClient
+Okhttp的起源
+Ok是和HttpURLConnection 平级的关系,在Socket的基础上封装的
+对比了Volley和Ok
+RESTful 常见的API 是什么样的格式
+
+OK怎么使用
+第一步,创建Client对象
+第二步,创建Request对象
+第三部,调用client的newCall方法,把request传入
+                    ->enqueue->发起网络请求
+
+注意: 一个Client在创建的时候,会默认创建一个线程池
+        所以,Client需要单例
+    enqueue方法虽然是异步的,但是,回调的方法,都在子线程中
+        要想刷新UI,需要配合Handler使用
+
+Post请求:
+    参数都会放在FormBody里,是以key-value的形式添加的
+    构建完成FormBody里之后,把它放到Request对象里,发送请求
+
+封装:
+    会封装HttpManager:
+        这个类是单例的,里面有Client对象来发起网络请求,
+            有Handler对象来做线程切换
+            有Gson 来解析Json数据
+
+         有通用的get请求方法和post请求方法
+         get请求和post请求 由于 第三步是一样的
+            所以把第三步封装成一个单独的方法
+
+         然后,无论请求成功还是失败
+         都利用Handler在主线程中回调我们自己写的接口的对应方法
+
+
+    HttpUtil:
+        在页面真正请求数据的时候,是调用HttpUtil里的方法
+        这个类,会写很多很多的静态方法,
+        将每一个特定的网络请求都封装成独特的方法
+        传入的参数,是对页面有用的参数,例如想要请求第几页
+                或者搜索时 搜索的内容
+
+    NetApi:
+        网络数据的常量,在真正做项目的时候,一个项目它的
+        接口网址的域名部分一定是相同的,所有在抽常量的时候
+        会把BaseURL单独抽离出来,并写上一些静态方法
+        来生成指定的URL,这个部分 我们在B段的时候,由于接口
+        通常不能满足要求,所以不会太严格的这样做
+
